@@ -6,10 +6,10 @@ A PHP scraper to get app data from Google Play.
 Installation
 ------------
 
-Add `raulr/google-play-scraper` as a require dependency in your `composer.json` file:
+Add `undefinedor/google-play-scraper` as a require dependency in your `composer.json` file:
 
 ```sh
-$ composer require raulr/google-play-scraper
+$ composer require undefinedor/google-play-scraper
 ```
 
 Usage
