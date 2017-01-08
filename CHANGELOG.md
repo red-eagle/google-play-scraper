@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.2.1 (2017-01-08)
+
+### Added
+
+* `getAllLanguages`, `getCommentCount` and `getAllLangCommentCount` methods.
+
 ## 0.2.0 (2016-11-10)
 
 ### Added

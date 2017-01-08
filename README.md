@@ -1,17 +1,19 @@
 Google Play Scraper
 ===================
 
-[![Build Status](https://travis-ci.org/raulr/google-play-scraper.svg?branch=master)](https://travis-ci.org/raulr/google-play-scraper)
+Fork of https://github.com/undefinedor/google-play-scraper merged with https://github.com/raulr/google-play-scraper 
+
+[![Build Status](https://travis-ci.org/red-eagle/google-play-scraper.svg?branch=master)](https://travis-ci.org/red-eagle/google-play-scraper)
 
 A PHP scraper to get app data from Google Play.
 
 Installation
 ------------
 
-Add `undefinedor/google-play-scraper` as a require dependency in your `composer.json` file:
+Add `red-eagle/google-play-scraper` as a require dependency in your `composer.json` file:
 
 ```sh
-$ composer require undefinedor/google-play-scraper
+$ composer require red-eagle/google-play-scraper
 ```
 
 Usage
