@@ -533,7 +533,8 @@ class Scraper
             $this->lastRequestTime = microtime(true);
             try {
                 $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
-                    'form_params' => $params
+                    'form_params' => $params,
+                    'allow_redirects' => true
                 ]);
                 $text = ltrim($response->getBody()->getContents(), ")]}'");
                 $data = \GuzzleHttp\json_decode($text, true);
@@ -542,6 +543,7 @@ class Scraper
                     echo "ERROR on parsing json" . PHP_EOL;
                     echo $text . PHP_EOL;
                 }
+                sleep(1);
                 return $count;
             }
             $currentCount = substr_count($data[0][2], 'single-review');
