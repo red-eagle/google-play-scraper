@@ -182,7 +182,7 @@ class Scraper
         }
 
         // Comment count
-        $info['comment_count'] = $this->getCommentCount($id, $lang);
+        //$info['comment_count'] = $this->getCommentCount($id, $lang);
         //All languages
         $info['all_languages'] = $this->_getLanguages();
 
