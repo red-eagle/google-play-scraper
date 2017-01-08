@@ -21,9 +21,6 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
-    /**
-     * @return \Raulr\GooglePlayScraper\Scraper
-     */
     public function getScraper(HandlerStack $handler = null)
     {
         $guzzleOptions = array(
@@ -101,7 +98,6 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
             new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app2.html')),
             new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_1.json')),
             new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_2.json')),
-
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
@@ -129,6 +125,8 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
             new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/app3.html')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_1.json')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_2.json')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);

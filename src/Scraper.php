@@ -536,9 +536,11 @@ class Scraper
         $crawler = $this->client->getCrawler();
         $nodes = $crawler->filter("head > link[hreflang]");
         if ($nodes->count() === 0) return [];
-        return $nodes->each(function($node) {
+        $result = $nodes->each(function($node) {
             return $node->attr('hreflang');
         });
+        array_shift($result); //Delete first element "x-default"
+        return $result;
     }
 
     /**
