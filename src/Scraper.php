@@ -543,7 +543,7 @@ class Scraper
                     echo "ERROR on parsing json" . PHP_EOL;
                     echo $text . PHP_EOL;
                 }
-                sleep(1);
+//                sleep(1);
                 return $count;
             }
             $currentCount = substr_count($data[0][2], 'single-review');
