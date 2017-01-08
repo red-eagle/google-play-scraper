@@ -165,14 +165,18 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
             new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/list.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/list_2.html')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $list = $scraper->getListChunk('topselling_paid', 'GAME_ARCADE', 0, 2, 'en', 'us');
+        $list += $scraper->getListChunk('topselling_paid', 'GAME_ARCADE', 2, 2, 'en', 'us');
         $expected = json_decode(file_get_contents(__DIR__.'/resources/list.json'), true);
+        $expected += json_decode(file_get_contents(__DIR__.'/resources/list_2.json'), true);
         $this->assertEquals($expected, $list);
         $this->assertEquals('https://play.google.com/store/apps/category/GAME_ARCADE/collection/topselling_paid?hl=en&gl=us&start=0&num=2', $transactions[0]['request']->getUri());
+        $this->assertEquals('https://play.google.com/store/apps/category/GAME_ARCADE/collection/topselling_paid?hl=en&gl=us&start=2&num=2', $transactions[1]['request']->getUri());
     }
 
     public function testGetListChunkStartNotInt()
