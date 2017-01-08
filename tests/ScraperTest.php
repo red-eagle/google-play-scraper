@@ -77,9 +77,9 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app1.html')),
-            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app1_getreviews_1.json')),
-            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app1_getreviews_2.json')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1.html')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1_getreviews_1.json')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1_getreviews_2.json')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
@@ -95,7 +95,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app2.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2.html')),
             new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_1.json')),
             new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_2.json')),
         ));
