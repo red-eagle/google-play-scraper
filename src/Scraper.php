@@ -191,7 +191,7 @@ class Scraper
 
     public function getApps($ids, $lang = null, $country = null)
     {
-        $ids = (array) $ids;
+        $ids = (array)$ids;
         $apps = array();
 
         foreach ($ids as $id) {
@@ -294,13 +294,13 @@ class Scraper
         if (array_key_exists($price, $priceValues)) {
             $price = $priceValues[$price];
         } else {
-            throw new \InvalidArgumentException('"price" must contain one of the following values: '.implode(', ', array_keys($priceValues)));
+            throw new \InvalidArgumentException('"price" must contain one of the following values: ' . implode(', ', array_keys($priceValues)));
         }
 
         if (array_key_exists($rating, $ratingValues)) {
             $rating = $ratingValues[$rating];
         } else {
-            throw new \InvalidArgumentException('"rating" must contain one of the following values: '.implode(', ', array_keys($ratingValues)));
+            throw new \InvalidArgumentException('"rating" must contain one of the following values: ' . implode(', ', array_keys($ratingValues)));
         }
 
         $apps = array();
@@ -358,11 +358,11 @@ class Scraper
             $path = implode('/', $path);
         }
         $path = ltrim($path, '/');
-        $path = rtrim('/store/'.$path, '/');
-        $url = self::BASE_URL.$path;
+        $path = rtrim('/store/' . $path, '/');
+        $url = self::BASE_URL . $path;
         $query = http_build_query($params);
         if ($query) {
-            $url .= '?'.$query;
+            $url .= '?' . $query;
         }
         $crawler = $this->client->request('GET', $url);
         $status_code = $this->client->getResponse()->getStatus();
@@ -381,17 +381,17 @@ class Scraper
         $baseParts = parse_url(self::BASE_URL);
         $absoluteParts = array_merge($baseParts, $urlParts);
 
-        $absoluteUrl = $absoluteParts['scheme'].'://'.$absoluteParts['host'];
+        $absoluteUrl = $absoluteParts['scheme'] . '://' . $absoluteParts['host'];
         if (isset($absoluteParts['path'])) {
             $absoluteUrl .= $absoluteParts['path'];
         } else {
             $absoluteUrl .= '/';
         }
         if (isset($absoluteParts['query'])) {
-            $absoluteUrl .= '?'.$absoluteParts['query'];
+            $absoluteUrl .= '?' . $absoluteParts['query'];
         }
         if (isset($absoluteParts['fragment'])) {
-            $absoluteUrl .= '#'.$absoluteParts['fragment'];
+            $absoluteUrl .= '#' . $absoluteParts['fragment'];
         }
 
         return $absoluteUrl;
@@ -402,7 +402,7 @@ class Scraper
         return $crawler->filter('.card')->each(function ($node) {
             $app = array();
             $app['id'] = $node->attr('data-docid');
-            $app['url'] = self::BASE_URL.$node->filter('a')->attr('href');
+            $app['url'] = self::BASE_URL . $node->filter('a')->attr('href');
             $app['title'] = $node->filter('a.title')->attr('title');
             $app['image'] = $this->getAbsoluteUrl($node->filter('img.cover-image')->attr('data-cover-large'));
             $app['author'] = $node->filter('a.subtitle')->attr('title');
@@ -524,7 +524,8 @@ class Scraper
             $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
                 'form_params' => $params
             ]);
-            $data = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+            $text = ltrim($response->getBody()->getContents(), ")]}'");
+            $data = \GuzzleHttp\json_decode($text, true);
             $currentCount = substr_count($data[0][2], 'single-review');
             $count += $currentCount;
             $params['pageNum']++;
@@ -532,11 +533,12 @@ class Scraper
         return $count;
     }
 
-    private function _getLanguages() {
+    private function _getLanguages()
+    {
         $crawler = $this->client->getCrawler();
         $nodes = $crawler->filter("head > link[hreflang]");
         if ($nodes->count() === 0) return [];
-        $result = $nodes->each(function($node) {
+        $result = $nodes->each(function ($node) {
             return $node->attr('hreflang');
         });
         array_shift($result); //Delete first element "x-default"
