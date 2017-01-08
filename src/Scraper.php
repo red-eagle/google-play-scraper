@@ -4,6 +4,7 @@ namespace Raulr\GooglePlayScraper;
 
 use Goutte\Client;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DomCrawler\Crawler;
 use Raulr\GooglePlayScraper\Exception\RequestException;
 use Raulr\GooglePlayScraper\Exception\NotFoundException;
@@ -20,6 +21,7 @@ class Scraper
     protected $lastRequestTime;
     protected $lang = 'en';
     protected $country = 'us';
+    protected $debug = false;
 
     public function __construct(GuzzleClientInterface $guzzleClient = null)
     {
@@ -57,6 +59,14 @@ class Scraper
     public function getDefaultCountry()
     {
         return $this->country;
+    }
+
+    public function setDebug($val) {
+        $this->debug = (bool) $val;
+    }
+
+    public function getDebug() {
+        return $this->debug;
     }
 
     public function getCategories()
@@ -521,11 +531,19 @@ class Scraper
         do {
             $this->_handleDelay();
             $this->lastRequestTime = microtime(true);
-            $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
-                'form_params' => $params
-            ]);
-            $text = ltrim($response->getBody()->getContents(), ")]}'");
-            $data = \GuzzleHttp\json_decode($text, true);
+            try {
+                $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
+                    'form_params' => $params
+                ]);
+                $text = ltrim($response->getBody()->getContents(), ")]}'");
+                $data = \GuzzleHttp\json_decode($text, true);
+            } catch (\Exception $exception) {
+                if ($this->debug && !empty($text)) {
+                    echo "ERROR on parsing json" . PHP_EOL;
+                    echo $text . PHP_EOL;
+                }
+                return $count;
+            }
             $currentCount = substr_count($data[0][2], 'single-review');
             $count += $currentCount;
             $params['pageNum']++;
