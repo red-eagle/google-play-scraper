@@ -1,18 +1,21 @@
 {
-    "name": "undefinedor/google-play-scraper",
+    "name": "red-eagle/google-play-scraper",
     "type": "library",
-    "description": "A PHP scraper to get app data from Google Play",
+    "description": "A PHP scraper to get app data from Google Play. Fork of raulr/google-play-scraper.",
     "keywords": ["google play", "scraper"],
-    "homepage": "https://github.com/raulr/google-play-scraper",
+    "homepage": "https://github.com/red-eagle/google-play-scraper",
     "license": "MIT",
     "require": {
         "fabpot/goutte": "^3.0"
     },
-    "license": "MIT",
     "authors": [
         {
             "name": "Raul Rodriguez",
             "email": "raul@raulr.net"
+        },
+        {
+            "name": "Red Eagle",
+            "email": "rosso.aquila@gmail.com"
         }
     ],
     "autoload": {

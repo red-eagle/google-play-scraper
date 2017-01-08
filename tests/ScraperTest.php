@@ -21,6 +21,9 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
+    /**
+     * @return \Raulr\GooglePlayScraper\Scraper
+     */
     public function getScraper(HandlerStack $handler = null)
     {
         $guzzleOptions = array(
@@ -28,6 +31,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         );
         if ($handler) {
             $guzzleOptions['handler'] = $handler;
+            $quzzleOptions['proxy'] = 'socks5://localhost:9050';
         }
         $guzzleClient = new Client($guzzleOptions);
         $scraper = m::mock('Raulr\GooglePlayScraper\Scraper', array($guzzleClient))->makePartial();
@@ -61,13 +65,13 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/categories.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/categories.html')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $app = $scraper->getCategories();
-        $expected = json_decode(file_get_contents(__DIR__.'/resources/categories.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__ . '/resources/categories.json'), true);
         $this->assertEquals($expected, $app);
         $this->assertEquals('https://play.google.com/store/apps?hl=en&gl=us', $transactions[0]['request']->getUri());
     }
@@ -77,13 +81,15 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app1.html')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app1_getreviews_1.json')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app1_getreviews_2.json')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $app = $scraper->getApp('com.mojang.minecraftpe', 'en', 'us');
-        $expected = json_decode(file_get_contents(__DIR__.'/resources/app1.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__ . '/resources/app1.json'), true);
         $this->assertEquals($expected, $app);
         $this->assertEquals('https://play.google.com/store/apps/details?id=com.mojang.minecraftpe&hl=en&gl=us', $transactions[0]['request']->getUri());
     }
@@ -93,13 +99,16 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/app2.html')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_1.json')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app2_getreviews_2.json')),
+
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $app = $scraper->getApp('com.app_h2solutions.layout', 'zh', 'cn');
-        $expected = json_decode(file_get_contents(__DIR__.'/resources/app2.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__ . '/resources/app2.json'), true);
         $this->assertEquals($expected, $app);
         $this->assertEquals('https://play.google.com/store/apps/details?id=com.app_h2solutions.layout&hl=zh&gl=cn', $transactions[0]['request']->getUri());
     }
@@ -142,13 +151,13 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/list.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/list.html')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $list = $scraper->getListChunk('topselling_paid', 'GAME_ARCADE', 0, 2, 'en', 'us');
-        $expected = json_decode(file_get_contents(__DIR__.'/resources/list.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__ . '/resources/list.json'), true);
         $this->assertEquals($expected, $list);
         $this->assertEquals('https://play.google.com/store/apps/category/GAME_ARCADE/collection/topselling_paid?hl=en&gl=us&start=0&num=2', $transactions[0]['request']->getUri());
     }
@@ -242,5 +251,10 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
 
         $apps = $scraper->getDetailList('topselling_paid', 'GAME_ARCADE', 'en', 'us');
         $this->assertEquals($expected, $apps);
+    }
+
+    public function testGetCommentCount()
+    {
+
     }
 }

@@ -180,12 +180,17 @@ class Scraper
             $info['video_image'] = null;
         }
 
+        // Comment count
+        $info['comment_count'] = $this->getCommentCount($id, $lang);
+        //All languages
+        $info['all_languages'] = $this->_getLanguages();
+
         return $info;
     }
 
     public function getApps($ids, $lang = null, $country = null)
     {
-        $ids = (array) $ids;
+        $ids = (array)$ids;
         $apps = array();
 
         foreach ($ids as $id) {
@@ -229,7 +234,7 @@ class Scraper
         $apps = $crawler->filter('.card')->each(function ($node) {
             $app = array();
             $app['id'] = $node->attr('data-docid');
-            $app['url'] = self::BASE_URL.$node->filter('a')->attr('href');
+            $app['url'] = self::BASE_URL . $node->filter('a')->attr('href');
             $app['title'] = $node->filter('a.title')->attr('title');
             $app['image'] = $node->filter('img.cover-image')->attr('data-cover-large');
             $app['author'] = $node->filter('a.subtitle')->attr('title');
@@ -296,26 +301,20 @@ class Scraper
         return $this->getApps($ids);
     }
 
-    protected function request($path, array $params = array())
+    protected function request($path, array $params = array(), $method = "GET")
     {
-        // handle delay
-        if (!empty($this->delay) && !empty($this->lastRequestTime)) {
-            $currentTime = microtime(true);
-            $delaySecs = $this->delay / 1000;
-            $delay = max(0, $delaySecs - $currentTime + $this->lastRequestTime);
-            usleep($delay * 1000000);
-        }
+        $this->_handleDelay();
         $this->lastRequestTime = microtime(true);
 
         if (is_array($path)) {
             $path = implode('/', $path);
         }
         $path = ltrim($path, '/');
-        $path = rtrim('/store/apps/'.$path, '/');
-        $url = self::BASE_URL.$path;
+        $path = rtrim('/store/apps/' . $path, '/');
+        $url = self::BASE_URL . $path;
         $query = http_build_query($params);
         if ($query) {
-            $url .= '?'.$query;
+            $url .= '?' . $query;
         }
         $crawler = $this->client->request('GET', $url);
         $status_code = $this->client->getResponse()->getStatus();
@@ -334,17 +333,17 @@ class Scraper
         $baseParts = parse_url(self::BASE_URL);
         $absoluteParts = array_merge($baseParts, $urlParts);
 
-        $absoluteUrl = $absoluteParts['scheme'].'://'.$absoluteParts['host'];
+        $absoluteUrl = $absoluteParts['scheme'] . '://' . $absoluteParts['host'];
         if (isset($absoluteParts['path'])) {
             $absoluteUrl .= $absoluteParts['path'];
         } else {
             $absoluteUrl .= '/';
         }
         if (isset($absoluteParts['query'])) {
-            $absoluteUrl .= '?'.$absoluteParts['query'];
+            $absoluteUrl .= '?' . $absoluteParts['query'];
         }
         if (isset($absoluteParts['fragment'])) {
-            $absoluteUrl .= '#'.$absoluteParts['fragment'];
+            $absoluteUrl .= '#' . $absoluteParts['fragment'];
         }
 
         return $absoluteUrl;
@@ -392,13 +391,13 @@ class Scraper
                 case 'p':
                 case 'ul':
                 case 'div':
-                    $text = "\n\n".$text."\n\n";
+                    $text = "\n\n" . $text . "\n\n";
                     break;
                 case 'li':
-                    $text = '- '.$text."\n";
+                    $text = '- ' . $text . "\n";
                     break;
                 case 'br':
-                    $text = $text."\n";
+                    $text = $text . "\n";
                     break;
             }
 
@@ -406,5 +405,73 @@ class Scraper
         }
 
         return $text;
+    }
+
+    /**
+     * Get comment count
+     */
+    public function getAllLangCommentCount($id, $langs)
+    {
+        $count = 0;
+        foreach ($langs as $lang) {
+            $count += $this->getCommentCount($id, $lang);
+        }
+        return $count;
+    }
+
+    /**
+     *  reviewType:0
+     *  pageNum:0
+     *  id:com.onetongames.realbattlesimulator
+     *  reviewSortOrder:0
+     *  xhr:1
+     *  hl:en
+     */
+    public function getCommentCount($id, $lang = null)
+    {
+        $params = [
+            'reviewType' => 0,
+            'pageNum' => 0,
+            'id' => $id,
+            'reviewSortOrder' => 0,
+            'xhr' => 1,
+            'hl' => is_null($lang) ? $this->lang : $lang
+        ];
+        $count = 0;
+        do {
+            $this->_handleDelay();
+            $this->lastRequestTime = microtime(true);
+            $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
+                'form_params' => $params
+            ]);
+            $data = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+            $currentCount = substr_count($data[0][2], 'single-review');
+            $count += $currentCount;
+            $params['pageNum']++;
+        } while ($currentCount > 0);
+        return $count;
+    }
+
+    private function _getLanguages() {
+        $crawler = $this->client->getCrawler();
+        $nodes = $crawler->filter("head > link[hreflang]");
+        if ($nodes->count() === 0) return [];
+        return $nodes->each(function($node) {
+            return $node->attr('hreflang');
+        });
+    }
+
+    /**
+     * Delay
+     */
+    protected function _handleDelay()
+    {
+        // handle delay
+        if (!empty($this->delay) && !empty($this->lastRequestTime)) {
+            $currentTime = microtime(true);
+            $delaySecs = $this->delay / 1000;
+            $delay = max(0, $delaySecs - $currentTime + $this->lastRequestTime);
+            usleep($delay * 1000000);
+        }
     }
 }
