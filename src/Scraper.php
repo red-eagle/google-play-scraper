@@ -5,6 +5,7 @@ namespace Raulr\GooglePlayScraper;
 use Goutte\Client;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Raulr\GooglePlayScraper\Exception\BannedException;
 use Symfony\Component\DomCrawler\Crawler;
 use Raulr\GooglePlayScraper\Exception\RequestException;
 use Raulr\GooglePlayScraper\Exception\NotFoundException;
@@ -539,12 +540,7 @@ class Scraper
                 $text = ltrim($response->getBody()->getContents(), ")]}'");
                 $data = \GuzzleHttp\json_decode($text, true);
             } catch (\Exception $exception) {
-                if ($this->debug && !empty($text)) {
-                    echo "ERROR on parsing json" . PHP_EOL;
-                    echo $text . PHP_EOL;
-                }
-//                sleep(1);
-                return $count;
+                throw new BannedException();
             }
             $currentCount = substr_count($data[0][2], 'single-review');
             $count += $currentCount;

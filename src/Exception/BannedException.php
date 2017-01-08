@@ -9,7 +9,7 @@
 namespace Raulr\GooglePlayScraper\Exception;
 
 
-class GPBlock extends RequestException
+class BannedException extends RequestException
 {
     protected $message = "Looks like Google blocked us :(";
 }
