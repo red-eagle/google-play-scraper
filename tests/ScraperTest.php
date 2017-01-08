@@ -31,7 +31,6 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         );
         if ($handler) {
             $guzzleOptions['handler'] = $handler;
-            $quzzleOptions['proxy'] = 'socks5://localhost:9050';
         }
         $guzzleClient = new Client($guzzleOptions);
         $scraper = m::mock('Raulr\GooglePlayScraper\Scraper', array($guzzleClient))->makePartial();
@@ -65,13 +64,13 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/categories.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/categories.html')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $app = $scraper->getCategories();
-        $expected = json_decode(file_get_contents(__DIR__ . '/resources/categories.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/categories.json'), true);
         $this->assertEquals($expected, $app);
         $this->assertEquals('https://play.google.com/store/apps?hl=en&gl=us', $transactions[0]['request']->getUri());
     }
@@ -89,7 +88,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $app = $scraper->getApp('com.mojang.minecraftpe', 'en', 'us');
-        $expected = json_decode(file_get_contents(__DIR__ . '/resources/app1.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/app1.json'), true);
         $this->assertEquals($expected, $app);
         $this->assertEquals('https://play.google.com/store/apps/details?id=com.mojang.minecraftpe&hl=en&gl=us', $transactions[0]['request']->getUri());
     }
@@ -108,7 +107,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $app = $scraper->getApp('com.app_h2solutions.layout', 'zh', 'cn');
-        $expected = json_decode(file_get_contents(__DIR__ . '/resources/app2.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/app2.json'), true);
         $this->assertEquals($expected, $app);
         $this->assertEquals('https://play.google.com/store/apps/details?id=com.app_h2solutions.layout&hl=zh&gl=cn', $transactions[0]['request']->getUri());
     }
@@ -122,6 +121,22 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $scraper = $this->getScraper($handler);
         $this->setExpectedException('Raulr\GooglePlayScraper\Exception\NotFoundException');
         $app = $scraper->getApp('non.existing.app');
+    }
+
+    public function testGetAppWithNullByte()
+    {
+        $transactions = array();
+        $history = Middleware::history($transactions);
+        $mock = new MockHandler(array(
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/app3.html')),
+        ));
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+        $scraper = $this->getScraper($handler);
+        $app = $scraper->getApp('org.zooper.zwpro', 'de', 'de');
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/app3.json'), true);
+        $this->assertEquals($expected, $app);
+        $this->assertEquals('https://play.google.com/store/apps/details?id=org.zooper.zwpro&hl=de&gl=de', $transactions[0]['request']->getUri());
     }
 
     public function testGetApps()
@@ -151,13 +166,13 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $transactions = array();
         $history = Middleware::history($transactions);
         $mock = new MockHandler(array(
-            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__ . '/resources/list.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/list.html')),
         ));
         $handler = HandlerStack::create($mock);
         $handler->push($history);
         $scraper = $this->getScraper($handler);
         $list = $scraper->getListChunk('topselling_paid', 'GAME_ARCADE', 0, 2, 'en', 'us');
-        $expected = json_decode(file_get_contents(__DIR__ . '/resources/list.json'), true);
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/list.json'), true);
         $this->assertEquals($expected, $list);
         $this->assertEquals('https://play.google.com/store/apps/category/GAME_ARCADE/collection/topselling_paid?hl=en&gl=us&start=0&num=2', $transactions[0]['request']->getUri());
     }
@@ -253,8 +268,64 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $apps);
     }
 
-    public function testGetCommentCount()
+    public function testGetSearch()
     {
+        $transactions = array();
+        $history = Middleware::history($transactions);
+        $mock = new MockHandler(array(
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/search1.html')),
+            new Response(200, array('content-type' => 'text/html; charset=utf-8'), file_get_contents(__DIR__.'/resources/search2.html')),
+        ));
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+        $scraper = $this->getScraper($handler);
+        $search = $scraper->getSearch('unicorns', 'free', '4+', 'en', 'us');
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/search.json'), true);
+        $this->assertEquals($expected, $search);
+        $this->assertEquals('https://play.google.com/store/search?q=unicorns&c=apps&hl=en&gl=us&price=1&rating=1', $transactions[0]['request']->getUri());
+        $this->assertEquals('https://play.google.com/store/search?q=unicorns&c=apps&hl=en&gl=us&price=1&rating=1&pagTok=GAEiAggU%3AS%3AANO1ljLtUJw', $transactions[1]['request']->getUri());
+    }
 
+    public function testGetSearchQueryNotString()
+    {
+        $scraper = $this->getScraper();
+        $this->setExpectedException('InvalidArgumentException');
+        $scraper->getSearch(1.23);
+    }
+
+    public function testGetSearchPriceInvalid()
+    {
+        $scraper = $this->getScraper();
+        $this->setExpectedException('InvalidArgumentException');
+        $scraper->getSearch('unicorns', 0);
+    }
+
+    public function testGetSearchRatingInvalid()
+    {
+        $scraper = $this->getScraper();
+        $this->setExpectedException('InvalidArgumentException');
+        $scraper->getSearch('unicorns', 'all', 0);
+    }
+
+    public function testGetDetailSearch()
+    {
+        $expected = array(
+            'app1_id' => array('app1_data'),
+            'app2_id' => array('app2_data'),
+        );
+        $scraper = $this->getScraper();
+        $scraper
+            ->shouldReceive('getSearch')
+            ->with('unicorns', 'free', '4+', 'en', 'us')
+            ->once()
+            ->andReturn(array(array('id' => 'app1_id'), array('id' => 'app2_id')));
+        $scraper
+            ->shouldReceive('getApps')
+            ->with(array('app1_id', 'app2_id'))
+            ->once()
+            ->andReturn($expected);
+
+        $apps = $scraper->getDetailSearch('unicorns', 'free', '4+', 'en', 'us');
+        $this->assertEquals($expected, $apps);
     }
 }
