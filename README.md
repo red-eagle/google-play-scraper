@@ -288,3 +288,27 @@ $apps = $scraper->getSearch('unicorns', 'free', '4+');
 ### getDetailSearch
 
 Same as [getSearch](#getsearch) but returning full detail app data. An additional request is made for every app from the search result in order to get its details.
+
+### getCommentCount
+
+Retrieves commnet count for application on selected language
+
+#### Parameters
+
+* `$id` - application google play id
+* `$lang` - language
+
+#### Example
+
+```php
+$commentCount = $scraper->getCommentCount('com.facebook.katana', 'en');
+```
+
+### getAllLangCommentCount
+
+Same as [getCommentCount](#getcommentcount) but retrieves comment count for all selected language (array as second paramter)
+
+#### Parameters
+
+* `$id` - application google play id
+* `$langs` - languages (array)
