@@ -330,4 +330,39 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $apps = $scraper->getDetailSearch('unicorns', 'free', '4+', 'en', 'us');
         $this->assertEquals($expected, $apps);
     }
+
+    public function testGetCommentsIds() {
+        $transactions = array();
+        $history = Middleware::history($transactions);
+        $mock = new MockHandler(array(
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1_getreviews_1.json')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1_getreviews_2.json')),
+        ));
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+        $scraper = $this->getScraper($handler);
+        $actual = $scraper->getCommentIds('com.mojang.minecraftpe', 'en');
+        $expected = json_decode(file_get_contents(__DIR__.'/resources/app1_reviews_ids.json'), true);
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals('https://play.google.com/store/getreviews', $transactions[0]['request']->getUri());
+        $this->assertEquals('https://play.google.com/store/getreviews', $transactions[1]['request']->getUri());
+    }
+
+    public function testGetCommentsCount() {
+        $transactions = array();
+        $history = Middleware::history($transactions);
+        $mock = new MockHandler(array(
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1_getreviews_1.json')),
+            new Response(200, array('content-type' => 'application/json; charset=utf-8'), file_get_contents(__DIR__.'/resources/app1_getreviews_2.json')),
+        ));
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+        $scraper = $this->getScraper($handler);
+        $actual = $scraper->getCommentCount('com.mojang.minecraftpe', 'en');
+        $expected = count(json_decode(file_get_contents(__DIR__.'/resources/app1_reviews_ids.json'), true));
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals('https://play.google.com/store/getreviews', $transactions[0]['request']->getUri());
+        $this->assertEquals('https://play.google.com/store/getreviews', $transactions[1]['request']->getUri());
+
+    }
 }

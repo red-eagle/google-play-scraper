@@ -502,14 +502,9 @@ class Scraper
     /**
      * Get comment count.
      */
-    public function getAllLangCommentCount($id, $langs)
+    public function getAllLangCommentCount($id, $langs = [])
     {
-        $count = 0;
-        foreach ($langs as $lang) {
-            $count += $this->getCommentCount($id, $lang);
-        }
-
-        return $count;
+        return count($this->getAllLangCommentCount($id, $langs));
     }
 
     /**
@@ -522,6 +517,13 @@ class Scraper
      */
     public function getCommentCount($id, $lang = null)
     {
+        return count($this->getCommentIds($id, $lang));
+    }
+
+    /**
+     * @return array
+     */
+    public function getCommentIds($id, $lang = null) {
         $params = [
             'reviewType' => 0,
             'pageNum' => 0,
@@ -530,7 +532,7 @@ class Scraper
             'xhr' => 1,
             'hl' => is_null($lang) ? $this->lang : $lang,
         ];
-        $count = 0;
+        $comments = [];
         do {
             $this->_handleDelay();
             $this->lastRequestTime = microtime(true);
@@ -544,12 +546,26 @@ class Scraper
             } catch (\Exception $exception) {
                 throw new BannedException();
             }
-            $currentCount = substr_count($data[0][2], 'single-review');
-            $count += $currentCount;
+            if(preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
+                $comments += $reviews[0];
+            } else {
+                break;
+            }
             ++$params['pageNum'];
-        } while ($currentCount > 0);
+        } while (true);
+        return $comments;
+    }
 
-        return $count;
+    public function getAllLangCommentIds($id, $langs = []) {
+        if (empty($langs)) {
+            $lang = [$this->getDefaultLang()];
+        }
+        $comments = [];
+        foreach ($langs as $lang) {
+            $comments += $this->getCommentIds($id, $lang);
+        }
+
+        return array_unique($comments);
     }
 
     private function _getLanguages()
