@@ -547,7 +547,7 @@ class Scraper
                 throw new BannedException();
             }
             if(preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
-                $comments += $reviews[0];
+                $comments = array_merge($comments, $reviews[0]);
             } else {
                 break;
             }
@@ -562,7 +562,7 @@ class Scraper
         }
         $comments = [];
         foreach ($langs as $lang) {
-            $comments += $this->getCommentIds($id, $lang);
+            $comments = array_merge( $this->getCommentIds($id, $lang), $comments);
         }
 
         return array_unique($comments);
