@@ -504,7 +504,7 @@ class Scraper
      */
     public function getAllLangCommentCount($id, $langs = [])
     {
-        return count($this->getAllLangCommentCount($id, $langs));
+        return count($this->getAllLangCommentIds($id, $langs));
     }
 
     /**
