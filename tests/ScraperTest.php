@@ -8,6 +8,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
+use Raulr\GooglePlayScraper\Scraper;
 
 /**
  * @author Raul Rodriguez <raul@raulr.net>
@@ -364,5 +365,20 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https://play.google.com/store/getreviews', $transactions[0]['request']->getUri());
         $this->assertEquals('https://play.google.com/store/getreviews', $transactions[1]['request']->getUri());
 
+    }
+
+    public function testSimilar() {
+        $transactions = [];
+        $history = Middleware::history($transactions);
+        $mock = new MockHandler([
+            new Response(200, ['content-type' => 'application/json; charset=utf-8'], file_get_contents(__DIR__ . '/resources/similar.html'))
+        ]);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+        $scrapper = $this->getScraper($handler);
+        $similar = $scrapper->getSimilar('com.ea.games.simsfreeplay_row');
+        $expected = json_decode(file_get_contents(__DIR__ . '/resources/similar.json'), true);
+        $this->assertEquals($expected, $similar);
+        $this->assertEquals('https://play.google.com/store/apps/similar?id=com.ea.games.simsfreeplay_row', $transactions[0]['request']->getUri());
     }
 }

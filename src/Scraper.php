@@ -63,7 +63,7 @@ class Scraper
 
     public function setDebug($val)
     {
-        $this->debug = (bool) $val;
+        $this->debug = (bool)$val;
     }
 
     public function getDebug()
@@ -203,7 +203,7 @@ class Scraper
 
     public function getApps($ids, $lang = null, $country = null)
     {
-        $ids = (array) $ids;
+        $ids = (array)$ids;
         $apps = array();
 
         foreach ($ids as $id) {
@@ -265,8 +265,14 @@ class Scraper
         return $apps;
     }
 
-    public function getDetailListChunk($collection, $category = null, $start = 0, $num = 60, $lang = null, $country = null)
-    {
+    public function getDetailListChunk(
+        $collection,
+        $category = null,
+        $start = 0,
+        $num = 60,
+        $lang = null,
+        $country = null
+    ) {
         $apps = $this->getListChunk($collection, $category, $start, $num, $lang, $country);
         $ids = array_map(function ($app) {
             return $app['id'];
@@ -306,13 +312,15 @@ class Scraper
         if (array_key_exists($price, $priceValues)) {
             $price = $priceValues[$price];
         } else {
-            throw new \InvalidArgumentException('"price" must contain one of the following values: '.implode(', ', array_keys($priceValues)));
+            throw new \InvalidArgumentException('"price" must contain one of the following values: ' . implode(', ',
+                    array_keys($priceValues)));
         }
 
         if (array_key_exists($rating, $ratingValues)) {
             $rating = $ratingValues[$rating];
         } else {
-            throw new \InvalidArgumentException('"rating" must contain one of the following values: '.implode(', ', array_keys($ratingValues)));
+            throw new \InvalidArgumentException('"rating" must contain one of the following values: ' . implode(', ',
+                    array_keys($ratingValues)));
         }
 
         $apps = array();
@@ -358,23 +366,19 @@ class Scraper
     protected function request($path, array $params = array())
     {
         // handle delay
-        if (!empty($this->delay) && !empty($this->lastRequestTime)) {
-            $currentTime = microtime(true);
-            $delaySecs = $this->delay / 1000;
-            $delay = max(0, $delaySecs - $currentTime + $this->lastRequestTime);
-            usleep($delay * 1000000);
-        }
+        $this->_handleDelay();
+
         $this->lastRequestTime = microtime(true);
 
         if (is_array($path)) {
             $path = implode('/', $path);
         }
         $path = ltrim($path, '/');
-        $path = rtrim('/store/'.$path, '/');
-        $url = self::BASE_URL.$path;
+        $path = rtrim('/store/' . $path, '/');
+        $url = self::BASE_URL . $path;
         $query = http_build_query($params);
         if ($query) {
-            $url .= '?'.$query;
+            $url .= '?' . $query;
         }
         $crawler = $this->client->request('GET', $url);
         $status_code = $this->client->getResponse()->getStatus();
@@ -393,17 +397,17 @@ class Scraper
         $baseParts = parse_url(self::BASE_URL);
         $absoluteParts = array_merge($baseParts, $urlParts);
 
-        $absoluteUrl = $absoluteParts['scheme'].'://'.$absoluteParts['host'];
+        $absoluteUrl = $absoluteParts['scheme'] . '://' . $absoluteParts['host'];
         if (isset($absoluteParts['path'])) {
             $absoluteUrl .= $absoluteParts['path'];
         } else {
             $absoluteUrl .= '/';
         }
         if (isset($absoluteParts['query'])) {
-            $absoluteUrl .= '?'.$absoluteParts['query'];
+            $absoluteUrl .= '?' . $absoluteParts['query'];
         }
         if (isset($absoluteParts['fragment'])) {
-            $absoluteUrl .= '#'.$absoluteParts['fragment'];
+            $absoluteUrl .= '#' . $absoluteParts['fragment'];
         }
 
         return $absoluteUrl;
@@ -414,7 +418,7 @@ class Scraper
         return $crawler->filter('.card')->each(function ($node) {
             $app = array();
             $app['id'] = $node->attr('data-docid');
-            $app['url'] = self::BASE_URL.$node->filter('a')->attr('href');
+            $app['url'] = self::BASE_URL . $node->filter('a')->attr('href');
             $app['title'] = $node->filter('a.title')->attr('title');
             $app['image'] = $this->getAbsoluteUrl($node->filter('img.cover-image')->attr('data-cover-large'));
             $app['author'] = $node->filter('a.subtitle')->attr('title');
@@ -483,13 +487,13 @@ class Scraper
                 case 'p':
                 case 'ul':
                 case 'div':
-                    $text = "\n\n".$text."\n\n";
+                    $text = "\n\n" . $text . "\n\n";
                     break;
                 case 'li':
-                    $text = '- '.$text."\n";
+                    $text = '- ' . $text . "\n";
                     break;
                 case 'br':
-                    $text = $text."\n";
+                    $text = $text . "\n";
                     break;
             }
 
@@ -523,7 +527,8 @@ class Scraper
     /**
      * @return array
      */
-    public function getCommentIds($id, $lang = null) {
+    public function getCommentIds($id, $lang = null)
+    {
         $params = [
             'reviewType' => 0,
             'pageNum' => 0,
@@ -537,7 +542,7 @@ class Scraper
             $this->_handleDelay();
             $this->lastRequestTime = microtime(true);
             try {
-                $response = $this->client->getClient()->post(self::BASE_URL.'/store/getreviews', [
+                $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
                     'form_params' => $params,
                     'allow_redirects' => true,
                 ]);
@@ -546,7 +551,7 @@ class Scraper
             } catch (\Exception $exception) {
                 throw new BannedException();
             }
-            if(preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
+            if (preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
                 $comments = array_merge($comments, $reviews[0]);
             } else {
                 break;
@@ -556,16 +561,26 @@ class Scraper
         return $comments;
     }
 
-    public function getAllLangCommentIds($id, $langs = []) {
+    public function getAllLangCommentIds($id, $langs = [])
+    {
         if (empty($langs)) {
             $lang = [$this->getDefaultLang()];
         }
         $comments = [];
         foreach ($langs as $lang) {
-            $comments = array_merge( $this->getCommentIds($id, $lang), $comments);
+            $comments = array_merge($this->getCommentIds($id, $lang), $comments);
         }
 
         return array_unique($comments);
+    }
+
+    public function getSimilar($id)
+    {
+        $crawler = $this->request('apps/similar', ['id' => $id]);
+        return $crawler->filter('.card')->each(function($node) {
+            /** @var Crawler $node*/
+            return $node->attr('data-docid');
+        });
     }
 
     private function _getLanguages()
