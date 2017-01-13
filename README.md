@@ -291,7 +291,7 @@ Same as [getSearch](#getsearch) but returning full detail app data. An additiona
 
 ### getCommentCount
 
-Retrieves commnet count for application on selected language
+Retrieves comment count for application on selected language
 
 #### Parameters
 
@@ -312,3 +312,17 @@ Same as [getCommentCount](#getcommentcount) but retrieves comment count for all 
 
 * `$id` - application google play id
 * `$langs` - languages (array)
+
+### getSimilar
+
+Retrieves similar apps
+
+#### Parameters
+
+* `$id` - application google play id
+
+### getDetailSimilar
+
+Same as [getDetailSimilar](#getdetailsimilar) but retrieves apps with details
+
+* `$id` - application google play id

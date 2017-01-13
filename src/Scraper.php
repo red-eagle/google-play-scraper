@@ -577,10 +577,13 @@ class Scraper
     public function getSimilar($id)
     {
         $crawler = $this->request('apps/similar', ['id' => $id]);
-        return $crawler->filter('.card')->each(function($node) {
-            /** @var Crawler $node*/
-            return $node->attr('data-docid');
-        });
+        return $this->parseAppList($crawler);
+    }
+
+    public function getDetailSimilar($id) {
+        return array_map(function($app) {
+            return $this->getApp($app['id']);
+        }, $this->getSimilar($id));
     }
 
     private function _getLanguages()
