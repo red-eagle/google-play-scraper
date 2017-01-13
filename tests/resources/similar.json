@@ -1,26 +1,218 @@
 [
-  "com.eamobile.sims3_row_qwf",
-  "com.ea.game.simcitymobile_row",
-  "com.ea.games.simsfreeplay_na",
-  "com.eamobile.sims3_na_qwf",
-  "com.fungames.blockcraft",
-  "com.sparklingsociety.cityisland3",
-  "com.sparklingsociety.cityisland4",
-  "com.pearlgames.villagecityislandsim",
-  "com.sunstorm.hsd",
-  "com.i6.FlightSimulatorAirplane3D",
-  "mobi.MultiCraft",
-  "com.baklabs.taxi.simulator",
-  "com.gameloft.android.ANMP.GloftDYHM",
-  "air.MSPMobile",
-  "es.socialpoint.DragonCity",
-  "com.playmobil.luxusvilla",
-  "com.ovilex.bussimulator2015",
-  "com.accurve.game23",
-  "fr.x_studios.x_laser_2",
-  "com.fungames.flightpilot",
-  "com.ovilex.taxisim2016",
-  "com.spheregamestudios.designercity",
-  "com.sparklingsocietytycoon.paradisecityislandsim",
-  "com.hg.cloudsandsheepfree"
+  {
+    "id": "com.eamobile.sims3_row_qwf",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.eamobile.sims3_row_qwf",
+    "title": "The Sims\u2122 3",
+    "image": "https:\/\/lh4.ggpht.com\/dHh-UvUX2nZwSUNVY4GS90jF2OBxEznJj1EhR943TymHiB3481Pymv0Njiw1QGH9ziY=w340",
+    "author": "ELECTRONIC ARTS",
+    "rating": 3.0218801498413,
+    "price": "61,90\u00a0\u0433\u0440\u043d."
+  },
+  {
+    "id": "com.ea.game.simcitymobile_row",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.ea.game.simcitymobile_row",
+    "title": "SimCity BuildIt",
+    "image": "https:\/\/lh3.googleusercontent.com\/aLa7G2Cccnzk7y8JpJjGypEDqi1XhgXC4Pm8id4ynLyv8MQhsIDqkmWbL5BikYNr4Q=w340",
+    "author": "ELECTRONIC ARTS",
+    "rating": 4.389771938324,
+    "price": null
+  },
+  {
+    "id": "com.ea.games.simsfreeplay_na",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.ea.games.simsfreeplay_na",
+    "title": "The Sims\u2122 FreePlay",
+    "image": "https:\/\/lh3.googleusercontent.com\/Em0gOfC9EvQ8YBcc_CnE1od-zjXWCrWnvMSl75y1_w8KcAfuUSvBQTgBbxx-5qF1ULY=w340",
+    "author": "ELECTRONIC ARTS",
+    "rating": 4.2595791816711,
+    "price": null
+  },
+  {
+    "id": "com.eamobile.sims3_na_qwf",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.eamobile.sims3_na_qwf",
+    "title": "The Sims 3",
+    "image": "https:\/\/lh5.ggpht.com\/Ia5EUZhxxeqcveKoFra-zkqltQYDqeAtvdhs9ULmOWlyugHVUPzhDMlJsPUIJZ03yx8=w340",
+    "author": "ELECTRONIC ARTS",
+    "rating": 2.9253706932068,
+    "price": "200,56\u00a0\u0433\u0440\u043d."
+  },
+  {
+    "id": "com.fungames.blockcraft",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.fungames.blockcraft",
+    "title": "Block Craft 3D: Building Game",
+    "image": "https:\/\/lh3.googleusercontent.com\/o1US_4bdFr8LZezyp5IQ0n3yAnmskur9iXxhM4xKFKfiE9k85_PsVd7fs2IiJie2H9Vj=w340",
+    "author": "Fun Games For Free",
+    "rating": 4.4996137619019,
+    "price": null
+  },
+  {
+    "id": "com.sparklingsociety.cityisland3",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.sparklingsociety.cityisland3",
+    "title": "City Island 3 - Building Sim",
+    "image": "https:\/\/lh3.googleusercontent.com\/Ql9qCU95Pf3OEJf8HXLWiRyBpdpaTD9iwEUD08_N6ue9sbn_fP1bYzUk5uofjy055pw=w340",
+    "author": "Sparkling Society \u2122",
+    "rating": 4.3046646118164,
+    "price": null
+  },
+  {
+    "id": "com.sparklingsociety.cityisland4",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.sparklingsociety.cityisland4",
+    "title": "City Island 4 - Sim Tycoon (HD",
+    "image": "https:\/\/lh3.googleusercontent.com\/kSOiJ8QwGBh6maA4Xhtz7jDCgmu1t2b8zu9wQydiiqCDQhFp5BzhYireiJOQCHQ3wuA=w340",
+    "author": "Sparkling Society \u2122",
+    "rating": 4.3139224052429,
+    "price": null
+  },
+  {
+    "id": "com.pearlgames.villagecityislandsim",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.pearlgames.villagecityislandsim",
+    "title": "Village City - Island Sim",
+    "image": "https:\/\/lh3.googleusercontent.com\/sM-wcHbesPA3Q3wcOaSRRxOkGCUOc-hzobIll3QlZO3CYg3v8vCc39jUjNwV-hmJYA=w340",
+    "author": "Sparkling Society World",
+    "rating": 4.2072682380676,
+    "price": null
+  },
+  {
+    "id": "com.sunstorm.hsd",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.sunstorm.hsd",
+    "title": "High School Life",
+    "image": "https:\/\/lh3.googleusercontent.com\/YSCe78mbAqvHm1HCEQeZMcfZr8kteqUKvae2GkhZ2P_TOja0byWuALDjIauEOzWNPg=w340",
+    "author": "Sunstorm",
+    "rating": 3.7921009063721,
+    "price": null
+  },
+  {
+    "id": "com.i6.FlightSimulatorAirplane3D",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.i6.FlightSimulatorAirplane3D",
+    "title": "\u0410\u0432\u0438\u0430\u0441\u0438\u043c\u0443\u043b\u044f\u0442\u043e\u0440 \u043b\u0435\u0442\u0430\u0442\u044c \u0441\u0430\u043c\u043e\u043b\u0435\u0442",
+    "image": "https:\/\/lh3.googleusercontent.com\/gwxezidVQtWQ6pwxDLfowvnY7MfZYHZ6-HAHZEQNh3pwp3D7jrte9vxiK3jHWnnqv2E=w340",
+    "author": "i6 Games",
+    "rating": 3.8791682720184,
+    "price": null
+  },
+  {
+    "id": "mobi.MultiCraft",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=mobi.MultiCraft",
+    "title": "\u25ba MultiCraft \u2015 Free Miner!",
+    "image": "https:\/\/lh3.googleusercontent.com\/a3JsKaTD7lu-SWtFqS63B0tKhNJZRefdXH8ntz8vnFCdkUsxPr99bnxybE98ZakQDgc=w340",
+    "author": "MultiCraft Official",
+    "rating": 4.3907260894775,
+    "price": null
+  },
+  {
+    "id": "com.baklabs.taxi.simulator",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.baklabs.taxi.simulator",
+    "title": "Taxi Game",
+    "image": "https:\/\/lh3.googleusercontent.com\/M0lGl3NpKX9kHimZMtZtJmZn2UYdC-yOo__vGzgM2LPdjME7kELf2hPj33qTmtXeyg=w340",
+    "author": "baklabs",
+    "rating": 3.713764667511,
+    "price": null
+  },
+  {
+    "id": "com.gameloft.android.ANMP.GloftDYHM",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.gameloft.android.ANMP.GloftDYHM",
+    "title": "Disney Magic Kingdoms",
+    "image": "https:\/\/lh3.googleusercontent.com\/9KDbb-UTqKOHh0Ya_aJDyi7Wss8lBQS_RZru0Bxj_Q52Uf0D4ZxnOgBjArD0JwRq278=w340",
+    "author": "Gameloft",
+    "rating": 4.1823830604553,
+    "price": null
+  },
+  {
+    "id": "air.MSPMobile",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=air.MSPMobile",
+    "title": "MovieStarPlanet",
+    "image": "https:\/\/lh3.googleusercontent.com\/FEQ_cEx8AtA-Yn4fEXdp8eVVJkhYdofV1kuPTbK42qBq82fkd5lz3RPM1JHd-XrLRNQ=w340",
+    "author": "MovieStarPlanet ApS",
+    "rating": 4.1825637817383,
+    "price": null
+  },
+  {
+    "id": "es.socialpoint.DragonCity",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=es.socialpoint.DragonCity",
+    "title": "Dragon City",
+    "image": "https:\/\/lh3.googleusercontent.com\/fkz-dhPNnrDvvOSiFMcddEiE2XGsJBd0ASfl0cX1hy_we1hqc7CgGENDVxqaehjEC6s=w340",
+    "author": "Social Point",
+    "rating": 4.5127015113831,
+    "price": null
+  },
+  {
+    "id": "com.playmobil.luxusvilla",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.playmobil.luxusvilla",
+    "title": "PLAYMOBIL Luxusvilla",
+    "image": "https:\/\/lh3.ggpht.com\/tzv2Ctuo7qfeEYkuq5x5yWVUlW-sFksF8nDJ-VFwudm0vtGrA9r6XziuQBLDiOnBPfI=w340",
+    "author": "geobra Brandst\u00e4tter Stiftung & Co.KG",
+    "rating": 3.4864394664764,
+    "price": null
+  },
+  {
+    "id": "com.ovilex.bussimulator2015",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.ovilex.bussimulator2015",
+    "title": "Bus Simulator 2015",
+    "image": "https:\/\/lh3.ggpht.com\/fhjJxyOYzCCz43smosE0ZLeyaactU2pkPOOUEjeix7oyVZDFiP2QP5gjHSt4rPWsaxw=w340",
+    "author": "Ovidiu Pop",
+    "rating": 4.1737995147705,
+    "price": null
+  },
+  {
+    "id": "com.accurve.game23",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.accurve.game23",
+    "title": "SIM - Sara Is Missing",
+    "image": "https:\/\/lh3.googleusercontent.com\/ieTAT1-cQkk0KE2aHH5obHm4hTUWdhssesCIRkQqOsmCHaODFJoCsKSWynCyKFms53iM=w340",
+    "author": "Monsoonlab",
+    "rating": 4.5267391204834,
+    "price": null
+  },
+  {
+    "id": "fr.x_studios.x_laser_2",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=fr.x_studios.x_laser_2",
+    "title": "\u043b\u0430\u0437\u0435\u0440\u043d\u0430 \u0443\u043a\u0430\u0437\u043a\u0430 \u04452 \u0441\u0438\u043c\u0443\u043b\u044f\u0442\u043e\u0440",
+    "image": "https:\/\/lh3.googleusercontent.com\/pgFhQ-AzVVA1G2jpMSJ3VkT2PJXE9QWboj48pQylGQRR1C1QqoUFWcqSYdFsbYWhSg=w340",
+    "author": "X-Apps & X-Games",
+    "rating": 3.4259536266327,
+    "price": null
+  },
+  {
+    "id": "com.fungames.flightpilot",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.fungames.flightpilot",
+    "title": "Flight Pilot Simulator 3D Free",
+    "image": "https:\/\/lh6.ggpht.com\/a8qcgzC7VYpswt_eCEnrQlGb8qnoPo0m4oVIHz81eaqFfo4LrILSj5F27ocEG5GGjA=w340",
+    "author": "Fun Games For Free",
+    "rating": 4.579532623291,
+    "price": null
+  },
+  {
+    "id": "com.ovilex.taxisim2016",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.ovilex.taxisim2016",
+    "title": "Taxi Sim 2016",
+    "image": "https:\/\/lh3.googleusercontent.com\/wWxqtHYKqtANycA6Co7psN6uGG2aYtbPgkS0521h32ME7K5f_gk4LADkfNgUUTiC99gU=w340",
+    "author": "Ovidiu Pop",
+    "rating": 4.2821207046509,
+    "price": null
+  },
+  {
+    "id": "com.spheregamestudios.designercity",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.spheregamestudios.designercity",
+    "title": "Designer City: building game",
+    "image": "https:\/\/lh3.googleusercontent.com\/U0rw0p0K0wprxbqG5A4O1o57uKT5xzDsy0cuB6QHVLDLeD00rjbL4UqOINqxftiZ6X6F=w340",
+    "author": "Sphere Game Studios",
+    "rating": 4.0436034202576,
+    "price": null
+  },
+  {
+    "id": "com.sparklingsocietytycoon.paradisecityislandsim",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.sparklingsocietytycoon.paradisecityislandsim",
+    "title": "Paradise City Island Sim",
+    "image": "https:\/\/lh3.googleusercontent.com\/qGyxxXYmtLRqzG7sVWt-yGxDdbbljVvJDpIA09QjeL_bifud-eKa7Gu7OyBljcLJlA=w340",
+    "author": "Sparkling Society Tycoon",
+    "rating": 4.4609112739563,
+    "price": null
+  },
+  {
+    "id": "com.hg.cloudsandsheepfree",
+    "url": "https:\/\/play.google.com\/store\/apps\/details?id=com.hg.cloudsandsheepfree",
+    "title": "Clouds & Sheep",
+    "image": "https:\/\/lh3.googleusercontent.com\/OyMFKjdNwZ0pL-x4ebzbcU2IzptPMTuRaEu1Zs9596z9H7ZWU-B0xo6gF67thV8LR-Y=w340",
+    "author": "HandyGames",
+    "rating": 4.5595464706421,
+    "price": null
+  }
 ]
