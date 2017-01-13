@@ -574,13 +574,17 @@ class Scraper
         return array_unique($comments);
     }
 
-    public function getSimilar($id)
+    public function getSimilar($id, $lang = null, $country = null)
     {
-        $crawler = $this->request('apps/similar', ['id' => $id]);
+        $crawler = $this->request('apps/similar', [
+            'id' => $id,
+            'hl' => is_null($lang) ? $this->getDefaultLang() : $lang,
+            'gl' => is_null($country) ? $this->getDefaultCountry() : $country,
+        ]);
         return $this->parseAppList($crawler);
     }
 
-    public function getDetailSimilar($id) {
+    public function getDetailSimilar($id, $lang = null, $country = null) {
         return array_map(function($app) {
             return $this->getApp($app['id']);
         }, $this->getSimilar($id));
