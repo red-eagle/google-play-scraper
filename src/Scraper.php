@@ -551,7 +551,8 @@ class Scraper
             } catch (\Exception $exception) {
                 throw new BannedException();
             }
-            if (preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
+            if (!empty($data[0][2])
+                && preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
                 $comments = array_merge($comments, $reviews[0]);
             } else {
                 break;
