@@ -1,5 +1,6 @@
 {
     "name": "red-eagle/google-play-scraper",
+    "version": "1.0.1",
     "type": "library",
     "description": "A PHP scraper to get app data from Google Play. Fork of raulr/google-play-scraper.",
     "keywords": ["google play", "scraper"],

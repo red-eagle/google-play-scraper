@@ -241,8 +241,13 @@ class Scraper
             'gl' => $country,
             'start' => $start,
             'num' => $num,
+            'numChildren' => 0,
+            'cctcss' => 'square-cover',
+            'cllayout' => "NORMAL",
+            'ipf' => 1,
+            'xhr' => 1
         );
-        $crawler = $this->request($path, $params);
+        $crawler = $this->request($path, $params, 'POST');
 
         return $this->parseAppList($crawler);
     }
@@ -363,7 +368,7 @@ class Scraper
         return $this->getApps($ids);
     }
 
-    protected function request($path, array $params = array())
+    protected function request($path, array $params = array(), $method = 'GET')
     {
         // handle delay
         $this->_handleDelay();
@@ -376,11 +381,18 @@ class Scraper
         $path = ltrim($path, '/');
         $path = rtrim('/store/' . $path, '/');
         $url = self::BASE_URL . $path;
+
         $query = http_build_query($params);
+        $requestParameters = [];
         if ($query) {
-            $url .= '?' . $query;
+            if ($method == 'GET') {
+                $url .= '?' . $query;
+            } else {
+                $requestParameters['body'] = $query;
+            }
         }
-        $crawler = $this->client->request('GET', $url);
+
+        $crawler = $this->client->request($method, $url, $requestParameters);
         $status_code = $this->client->getResponse()->getStatus();
         if ($status_code == 404) {
             throw new NotFoundException('Requested resource not found');
@@ -552,7 +564,8 @@ class Scraper
                 throw new BannedException();
             }
             if (!empty($data[0][2])
-                && preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)) {
+                && preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)
+            ) {
                 $comments = array_merge($comments, $reviews[0]);
             } else {
                 break;
@@ -585,8 +598,9 @@ class Scraper
         return $this->parseAppList($crawler);
     }
 
-    public function getDetailSimilar($id, $lang = null, $country = null) {
-        return array_map(function($app) {
+    public function getDetailSimilar($id, $lang = null, $country = null)
+    {
+        return array_map(function ($app) {
             return $this->getApp($app['id']);
         }, $this->getSimilar($id));
     }
