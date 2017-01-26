@@ -2,6 +2,7 @@
 
 namespace Raulr\GooglePlayScraper;
 
+use Campo\UserAgent;
 use Goutte\Client;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use Raulr\GooglePlayScraper\Exception\BannedException;
@@ -25,7 +26,9 @@ class Scraper
 
     public function __construct(GuzzleClientInterface $guzzleClient = null)
     {
-        $this->client = new Client();
+        $this->client = new Client([
+            'HTTP_USER_AGENT' => UserAgent::random(['device_type' => 'Desktop'])
+        ]);
         if ($guzzleClient) {
             $this->client->setClient($guzzleClient);
         }
