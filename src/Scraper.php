@@ -388,7 +388,7 @@ class Scraper
             if ($method == 'GET') {
                 $url .= '?' . $query;
             } else {
-                $requestParameters['body'] = $query;
+                $requestParameters['form_params'] = $params;
             }
         }
 
