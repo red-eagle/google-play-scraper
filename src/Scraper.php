@@ -243,14 +243,13 @@ class Scraper
             'hl' => $lang,
             'gl' => $country,
             'start' => $start,
-            'num' => $num,
-            'numChildren' => 0,
-            'cctcss' => 'square-cover',
-            'cllayout' => "NORMAL",
-            'ipf' => 1,
-            'xhr' => 1
+            'num' => $num
         );
-        $crawler = $this->request($path, $params, 'POST');
+        try {
+            $crawler = $this->request($path, $params);
+        } catch (RequestException $e) {
+            $crawler = $this->request($path, $params, 'POST');
+        }
 
         return $this->parseAppList($crawler);
     }
@@ -385,17 +384,18 @@ class Scraper
         $path = rtrim('/store/' . $path, '/');
         $url = self::BASE_URL . $path;
 
-        $query = http_build_query($params);
-        $requestParameters = [];
-        if ($query) {
+        $headers = [];
+        $requestParameters = '';
+        if ($params) {
             if ($method == 'GET') {
-                $url .= '?' . $query;
+                $url .= '?' . http_build_query($params);
             } else {
-                $requestParameters['form_params'] = $params;
+                $headers = ['HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded'];
+                $requestParameters = http_build_query($params);
             }
         }
 
-        $crawler = $this->client->request($method, $url, $requestParameters);
+        $crawler = $this->client->request($method, $url, [], [], $headers, $requestParameters);
         $status_code = $this->client->getResponse()->getStatus();
         if ($status_code == 404) {
             throw new NotFoundException('Requested resource not found');
