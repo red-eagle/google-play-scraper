@@ -578,12 +578,15 @@ class Scraper
         return $comments;
     }
 
-    public function getAllLangCommentIds($id, $langs = [])
+        public function getAllLangCommentIds($id, $langs = [])
     {
         if (empty($langs)) {
             $lang = [$this->getDefaultLang()];
         }
         $comments = [];
+
+        if (!is_array($langs) && !($langs instanceof \Traversable)) return [];
+
         foreach ($langs as $lang) {
             $comments = array_merge($this->getCommentIds($id, $lang), $comments);
         }
@@ -591,7 +594,7 @@ class Scraper
         return array_unique($comments);
     }
 
-    public function getSimilar($id, $lang = null, $country = null)
+        public function getSimilar($id, $lang = null, $country = null)
     {
         $crawler = $this->request('apps/similar', [
             'id' => $id,
