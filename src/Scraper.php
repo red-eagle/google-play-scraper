@@ -553,18 +553,22 @@ class Scraper
             'hl' => is_null($lang) ? $this->lang : $lang,
         ];
         $comments = [];
+        $errorCount = 0;
         do {
             $this->_handleDelay();
-            $this->lastRequestTime = microtime(true);
             try {
                 $response = $this->client->getClient()->post(self::BASE_URL . '/store/getreviews', [
                     'form_params' => $params,
                     'allow_redirects' => true,
                 ]);
-                $text = trim(ltrim($response->getBody()->getContents(), ")]}'"));
+                $this->lastRequestTime = microtime(true);
+                $text = trim(preg_replace('/^[^{[]*/', '', $response->getBody()->getContents()));
                 $data = \GuzzleHttp\json_decode($text, true);
             } catch (\Exception $exception) {
-                throw new BannedException();
+                if($errorCount > 5) throw new BannedException();
+                $errorCount++;
+                sleep(3);
+                continue;
             }
             if (!empty($data[0][2])
                 && preg_match_all('/(?<=data-reviewid=")gp:[^"]+/', $data[0][2], $reviews, PREG_PATTERN_ORDER)
@@ -574,6 +578,7 @@ class Scraper
                 break;
             }
             ++$params['pageNum'];
+            $errorCount = 0;
         } while (true);
         return $comments;
     }
